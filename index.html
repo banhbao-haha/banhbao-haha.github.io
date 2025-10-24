@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Nghe Nhạc Phong Cách Discord Profile</title>
+    <link rel="icon" type="image/gif" href="Banhbao.gif">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Thiết lập CSS gốc */
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #202225;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 50px;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        /* Background GIF (Đã chuyển sang dùng body::before) */
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('room.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            filter: blur(3px);
+            z-index: -2;
+        }
+        
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Lớp phủ mờ ảo */
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+        /* Khung chính chứa Profile và Widget (căn giữa) */
+        
+        .profile-container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            z-index: 10;
+            background-color: transparent;
+            backdrop-filter: none;
+        }
+        /* Avatar */
+        
+        .avatar-wrap {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #2f3136;
+        }
+        
+        .avatar-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .glow-ring {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 5px rgba(138, 43, 226, 0.7), 0 0 25px 10px rgba(138, 43, 226, 0.4);
+            z-index: -1;
+        }
+        /* Widget Nghe Nhạc */
+        
+        .music-widget {
+            background-color: rgba(47, 49, 54, 0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Album Art Mini */
+        
+        .album-art-mini {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            background-color: #3b3b3b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .album-art-mini img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: inherit;
+        }
+        /* Thanh Tiến Trình */
+        
+        #progress-container {
+            height: 6px;
+            background: rgba(79, 84, 92, 0.6);
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        #progress {
+            height: 100%;
+            width: 0%;
+            background: #1ed760;
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+        /* --- CÁC ICON MẠNG XÃ HỘI VÀ HIỆU ỨNG CHUYỂN ĐỔI --- */
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            margin: 0 10px;
+            border-radius: 8px;
+            transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease, border-radius 1s ease-in-out;
+        }
+        
+        .social-links a.is-round {
+            border-radius: 50%;
+        }
+        
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+        
+        .social-links .fa-youtube {
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.9);
+        }
+        
+        .social-links .fa-instagram {
+            background: -webkit-linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888, #833ab4, #5851db, #405de6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #dc2743;
+            text-shadow: 0 0 10px rgba(225, 48, 108, 0.9);
+        }
+        
+        .social-links .fa-facebook {
+            color: #1877F2;
+            text-shadow: 0 0 10px rgba(24, 119, 242, 0.9);
+        }
+        
+        .social-links .fa-tiktok {
+            color: #ffffff;
+            text-shadow: -2px -2px 0px rgba(0, 255, 238, 0.7), 2px 2px 0px rgba(255, 0, 80, 0.7), 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+        
+        .social-links .fa-youtube:hover {
+            text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8);
+        }
+        
+        .social-links .fa-instagram:hover {
+            text-shadow: 0 0 20px rgba(225, 48, 108, 1), 0 0 30px rgba(131, 58, 180, 0.8);
+        }
+        
+        .social-links .fa-facebook:hover {
+            text-shadow: 0 0 20px rgba(24, 119, 242, 1), 0 0 30px rgba(24, 119, 242, 0.8);
+        }
+        
+        .social-links .fa-tiktok:hover {
+            text-shadow: -3px -3px 0px rgba(0, 255, 238, 1), 3px 3px 0px rgba(255, 0, 80, 1), 0 0 20px rgba(255, 255, 255, 0.9);
+        }
+        /* Modal */
+        
+        #confirmation-modal {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        #confirmation-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .volume-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .volume-container input[type="range"] {
+            width: 66.666667%;
+        }
+        
+        .volume-icon {
+            margin-right: 0.75rem;
+        }
+    </style>
+</head>
+
+<body class="text-white">
+    <audio id="lofi-background-audio" loop autoplay muted>
+        <source src="tasty-chill-lofi-vibe-242105.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ audio.
+    </audio>
+
+    <div class="profile-container rounded-xl p-6 shadow-2xl">
+        <div class="avatar-wrap">
+            <div class="glow-ring"></div>
+            <img src="Banhbao.gif" alt="Avatar">
+        </div>
+
+        <h1 class="text-2xl font-bold mb-1">Banhbaongon</h1>
+        <p class="text-[#b9bbbe] text-sm mb-4">banhbao203</p>
+
+        <div class="social-links flex justify-center mb-6">
+            <a href="https://www.youtube.com/@Banhbaongon-fps" target="_blank" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com/banhbaongon1021/" target="_blank" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61580989261403" target="_blank" title="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.tiktok.com/@banhbaongon__" target="_blank" title="TikTok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </div>
+
+        <div class="music-widget text-left">
+            <p class="text-[#1ed760] font-semibold text-xs uppercase mb-2 flex items-center">
+                <i class="fas fa-headphones mr-1"></i> Đang nghe nhạc Spotify
+            </p>
+            <div class="flex items-center">
+                <div id="album-art-wrap" class="album-art-mini">
+                    <img src="Banhbao.gif" alt="Album Art" class="w-full h-full object-cover rounded-md">
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p id="song-name" class="font-bold truncate text-lg">Tên Bài Hát</p>
+                    <p id="artist-name" class="text-[#b9bbbe] text-sm truncate">Nghệ Sĩ</p>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div id="progress-container">
+                    <div id="progress"></div>
+                </div>
+                <div class="flex justify-between text-xs text-[#b9bbbe]">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+            <div class="flex justify-center mt-4">
+                <div class="controls">
+                    <button id="prev-btn" title="Bài trước">
+                        <i class="fas fa-backward"></i>
+                    </button>
+                    <button id="play-pause-btn" class="text-3xl mx-4" title="Phát/Tạm dừng">
+                        <i id="play-pause-icon" class="fas fa-play"></i>
+                    </button>
+                    <button id="next-btn" title="Bài tiếp theo">
+                        <i class="fas fa-forward"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="volume-container">
+                <div id="volume-icon" class="volume-icon">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" title="Âm lượng">
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
+        <div class="bg-[#2f3136] p-6 rounded-lg shadow-2xl w-full max-w-sm border border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-white">Xác nhận Phát Nhạc Đặc Biệt</h2>
+            <p class="text-[#b9bbbe] mb-6">Bạn có chắc chắn muốn bật bài hát **<span id="modal-song-name" class="font-bold text-white"></span>** không? Đây là một bài hát đặc biệt.</p>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-play-btn" class="px-4 py-2 text-sm font-semibold rounded-md bg-gray-600 text-white hover:bg-gray-700 transition duration-150">Hủy</button>
+                <button id="confirm-play-btn" class="px-4 py-2 text-sm font-semibold rounded-md bg-[#5865f2] text-white hover:bg-[#4752c4] transition duration-150">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = new Audio();
+        const lofiBackgroundAudio = document.getElementById('lofi-background-audio');
+
+        const LOFI_MAX_VOLUME_RATIO = 0.2;
+        const SPECIAL_TRACKS = [];
+
+        const socialIcons = document.querySelectorAll('.social-links a');
+
+        const songNameEl = document.getElementById('song-name');
+        const artistNameEl = document.getElementById('artist-name');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const progressEl = document.getElementById('progress');
+        const progressContainer = document.getElementById('progress-container');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playPauseIcon = document.getElementById('play-pause-icon');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeIconEl = document.getElementById('volume-icon');
+
+        const modal = document.getElementById('confirmation-modal');
+        const modalSongNameEl = document.getElementById('modal-song-name');
+        const confirmBtn = document.getElementById('confirm-play-btn');
+        const cancelBtn = document.getElementById('cancel-play-btn');
+
+        let isPlayConfirmed = false;
+
+        // CẬP NHẬT: Gán đúng tên file ảnh bìa cho từng bài hát
+        const trackList = [{
+            name: "ANH BIẾT RỒI",
+            artist: "RHYDER",
+            src: "ANH BIẾT RỒI.mp3",
+            cover: "rhyder.jpg" // Ảnh bìa RHYDER
+        }, {
+            name: "Thằng Điên",
+            artist: "JustaTee ft. Phương Ly",
+            src: "Thằng Điên.mp3",
+            cover: "thangdien.jpg" // Ảnh bìa Thằng Điên
+        }, {
+            name: "Mất Kết Nối",
+            artist: "DƯƠNG DOMIC",
+            src: "Mất Kết Nối.mp3",
+            cover: "đuôngmic.jpg" // Ảnh bìa DƯƠNG DOMIC
+        }, {
+            name: "Nơi Này Có Anh",
+            artist: "Sơn Tùng M-TP",
+            src: "Nơi Này Có Anh.mp3",
+            cover: "sontung.jpg" // Ảnh bìa Sơn Tùng M-TP
+        }, {
+            name: "Như Bến Đợi Đò",
+            artist: "HÂN CẨM TIÊN",
+            src: "Như Bến Đợi Đò.mp3",
+            cover: "hana cẩm tiên.jpg" // Ảnh bìa Hân Cẩm Tiên
+        }];
+
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+
+        function toggleLofiBackground(playLofi) {
+            if (playLofi) {
+                lofiBackgroundAudio.play().catch(e => console.log("Lofi auto-play blocked."));
+                lofiBackgroundAudio.volume = volumeSlider.value * LOFI_MAX_VOLUME_RATIO;
+            } else {
+                lofiBackgroundAudio.pause();
+            }
+        }
+
+        function updateVolumeIcon(volume) {
+            let iconClass = '';
+            if (volume == 0) {
+                iconClass = 'fas fa-volume-off';
+            } else if (volume < 0.5) {
+                iconClass = 'fas fa-volume-down';
+            } else {
+                iconClass = 'fas fa-volume-up';
+            }
+            volumeIconEl.innerHTML = `<i class="${iconClass}"></i>`;
+        }
+
+        function loadTrack(trackIndex, autoPlay = false) {
+            const track = trackList[trackIndex];
+            audioPlayer.src = track.src;
+            songNameEl.textContent = track.name;
+            artistNameEl.textContent = track.artist;
+
+            const albumArtMini = document.querySelector('.album-art-mini img');
+            if (albumArtMini) {
+                albumArtMini.src = track.cover;
+            } else {
+                const container = document.querySelector('.album-art-mini');
+                if (container) {
+                    container.innerHTML = `<img src="${track.cover}" alt="Album Art" class="w-full h-full object-cover rounded-md">`;
+                }
+            }
+            audioPlayer.load();
+
+            isPlayConfirmed = !SPECIAL_TRACKS.includes(track.name);
+
+            if (autoPlay && isPlayConfirmed) {
+                audioPlayer.play().then(() => {
+                    isPlaying = true;
+                    updatePlayPauseIcon(isPlaying);
+                    toggleLofiBackground(false);
+                }).catch(e => {
+                    console.error("Lỗi khi cố gắng phát nhạc tự động.", e);
+                    isPlaying = false;
+                    updatePlayPauseIcon(false);
+                    toggleLofiBackground(true);
+                });
+            } else {
+                isPlaying = false;
+                updatePlayPauseIcon(false);
+                toggleLofiBackground(true);
+            }
+        }
+
+        function playPauseTrack() {
+            const currentTrackName = trackList[currentTrackIndex].name;
+
+            if (isPlaying) {
+                audioPlayer.pause();
+                isPlaying = false;
+                updatePlayPauseIcon(isPlaying);
+                toggleLofiBackground(true);
+            } else {
+                if (SPECIAL_TRACKS.includes(currentTrackName) && !isPlayConfirmed) {
+                    showConfirmationModal();
+                } else {
+                    lofiBackgroundAudio.muted = false;
+
+                    audioPlayer.play().then(() => {
+                        isPlaying = true;
+                        updatePlayPauseIcon(isPlaying);
+                        toggleLofiBackground(false);
+                    }).catch(e => {
+                        console.error("Lỗi khi cố gắng phát nhạc.", e);
+                        isPlaying = false;
+                        updatePlayPauseIcon(false);
+                        toggleLofiBackground(true);
+                    });
+                }
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % trackList.length;
+            loadTrack(currentTrackIndex, isPlaying);
+        }
+
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + trackList.length) % trackList.length;
+            loadTrack(currentTrackIndex, isPlaying);
+        }
+
+        function updatePlayPauseIcon(playing) {
+            playPauseIcon.className = playing ? 'fas fa-pause' : 'fas fa-play';
+        }
+
+        const formatTime = (time) => {
+            if (!isFinite(time) || time < 0) return '0:00';
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+            return `${minutes}:${seconds}`;
+        };
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            const duration = audioPlayer.duration;
+            const currentTime = audioPlayer.currentTime;
+            if (isFinite(duration) && duration > 0) {
+                const progressPercent = (currentTime / duration) * 100;
+                progressEl.style.width = progressPercent + '%';
+                currentTimeEl.textContent = formatTime(currentTime);
+            } else {
+                currentTimeEl.textContent = '0:00';
+            }
+        });
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            if (isFinite(audioPlayer.duration) && audioPlayer.duration > 0) {
+                durationEl.textContent = formatTime(audioPlayer.duration);
+            }
+        });
+
+        audioPlayer.addEventListener('ended', () => {
+            nextTrack();
+        });
+
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const duration = audioPlayer.duration;
+            if (isFinite(duration) && duration > 0) {
+                audioPlayer.currentTime = (clickX / width) * duration;
+            }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            const newVolume = e.target.value;
+
+            audioPlayer.volume = newVolume;
+            lofiBackgroundAudio.volume = newVolume * LOFI_MAX_VOLUME_RATIO;
+
+            updateVolumeIcon(audioPlayer.volume);
+        });
+
+        function showConfirmationModal() {
+            modalSongNameEl.textContent = trackList[currentTrackIndex].name;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        function hideConfirmationModal() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function confirmPlay() {
+            hideConfirmationModal();
+            isPlayConfirmed = true;
+            playPauseTrack();
+        }
+
+        function cancelPlay() {
+            hideConfirmationModal();
+            isPlayConfirmed = false;
+            audioPlayer.pause();
+            isPlaying = false;
+            updatePlayPauseIcon(false);
+            toggleLofiBackground(true);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lofiBackgroundAudio.muted = true;
+            toggleLofiBackground(true);
+
+            socialIcons.forEach(icon => {
+                icon.classList.add('is-round');
+                setTimeout(() => {
+                    icon.classList.remove('is-round');
+                }, 1000);
+            });
+        });
+
+
+        playPauseBtn.addEventListener('click', playPauseTrack);
+        nextBtn.addEventListener('click', nextTrack);
+        prevBtn.addEventListener('click', prevTrack);
+
+        confirmBtn.addEventListener('click', confirmPlay);
+        cancelBtn.addEventListener('click', cancelPlay);
+
+        loadTrack(currentTrackIndex);
+        audioPlayer.volume = volumeSlider.value;
+        lofiBackgroundAudio.volume = volumeSlider.value * LOFI_MAX_VOLUME_RATIO;
+        updateVolumeIcon(audioPlayer.volume);
+    </script>
+</body>
+
+</html>
