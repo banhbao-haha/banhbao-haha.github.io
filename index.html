@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banhbaongon</title>
+
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* --- CSS TỐI ƯU VÀ SỬA LỖI CÚ PHÁP --- */
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f7;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+        
+         :root {
+            --primary-color: #203e5c;
+            /* Xanh đậm */
+            --accent-color: #f9a825;
+            /* Vàng cam */
+            --light-bg: #ffffff;
+            --dark-text: #1a1a1a;
+            --secondary-bg: #fdfdfd;
+            --facebook-color: #3b5998;
+            --tiktok-color: #000000;
+            --discord-color: #7289da;
+            --youtube-color: #ff0000;
+        }
+        /* Tối ưu Thanh Tab */
+        
+        .tab-bar {
+            background: var(--primary-color);
+            color: white;
+            padding: 0 0;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-bottom: 4px solid var(--accent-color);
+        }
+        
+        .tab-button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            border-radius: 0;
+            margin: 0 1px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tab-button:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab-button.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            transform: translateY(0);
+            box-shadow: 0 0 15px rgba(249, 168, 37, 0.5);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.6s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            border-bottom: 3px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 5px;
+            width: fit-content;
+        }
+        
+        section.container h2 {
+            display: block;
+            margin: 30px auto;
+        }
+        
+        #hero {
+            /* Sửa lỗi: Chỉ dùng các thuộc tính CSS tĩnh */
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 120px 0;
+            min-height: 450px;
+            position: relative;
+            /* Các thuộc tính background image và random sẽ được thêm bằng JavaScript */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+        
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+        
+        #hero .content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        #hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+        }
+        
+        #hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            font-weight: 300;
+        }
+        /* Hiệu ứng Phát Sáng cho nút CTA */
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 18px 45px;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 0 10px rgba(249, 168, 37, 0.8), 0 6px 20px rgba(249, 168, 37, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .cta-button:hover {
+            background: #fbc02d;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(249, 168, 37, 1), 0 10px 25px rgba(249, 168, 37, 0.8);
+        }
+        
+        #services {
+            background-color: var(--secondary-bg);
+            padding: 50px 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: var(--light-bg);
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s;
+            border-top: 5px solid var(--primary-color);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 5px var(--accent-color);
+        }
+        
+        .service-card .icon {
+            font-size: 3.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .service-card h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-top: 0;
+        }
+        
+        #contact {
+            background-color: var(--light-bg);
+            padding: 40px 0;
+        }
+        
+        #contact-form-web3 {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid var(--accent-color);
+        }
+        
+        #contact-form-web3 input:not([type="hidden"]),
+        #contact-form-web3 textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        #contact-form-web3 input:focus,
+        #contact-form-web3 textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(32, 62, 92, 0.1);
+            outline: none;
+        }
+        
+        #form-message {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        #profile-content h2 {
+            color: var(--accent-color);
+        }
+        
+        .profile-card {
+            background: var(--light-bg);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 30px;
+            border-top: 5px solid var(--accent-color);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .profile-header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .profile-header img:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-info-text h3 {
+            margin: 0;
+            font-size: 2.8rem;
+            color: var(--primary-color);
+        }
+        
+        .skills-list ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .skills-list ul li {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: background 0.3s;
+        }
+        
+        .skills-list ul li:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0 50px 0;
+        }
+        /* Hiệu ứng Phát Sáng cho nút Mạng xã hội */
+        
+        .social-buttons a,
+        .social-buttons button {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 150px;
+            justify-content: center;
+        }
+        
+        .social-buttons .facebook {
+            background-color: var(--facebook-color);
+            box-shadow: 0 0 10px rgba(59, 89, 152, 0.6);
+        }
+        
+        .social-buttons .tiktok {
+            background-color: var(--tiktok-color);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+        
+        .social-buttons .discord {
+            background-color: var(--discord-color);
+            box-shadow: 0 0 10px rgba(114, 137, 218, 0.6);
+        }
+        
+        .social-buttons .youtube {
+            background-color: var(--youtube-color);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+        }
+        
+        .social-buttons a:hover,
+        .social-buttons button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+        
+        #discord-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #consultation+footer {
+            display: none;
+        }
+        
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 50px;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        footer p {
+            margin: 0;
+            padding-bottom: 0;
+        }
+        
+        .footer-social {
+            display: none;
+        }
+        /* CSS cho Loading Spinner */
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            width: 1em;
+            height: 1em;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="discord-notification">Đã sao chép thành công</div>
+
+    <div class="tab-bar">
+        <button class="tab-button active" onclick="openTab(event, 'consultation')">Dịch Vụ Tư Vấn</button>
+        <button class="tab-button" onclick="openTab(event, 'profile')">Trang cá nhân</button>
+    </div>
+
+    <div id="consultation" class="tab-content active">
+
+        <section id="hero">
+            <div class="content">
+                <h1>Bạn muốn làm 1 dự án code</h1>
+                <p>Bên tôi cung cấp code và file code miễn phí không cần tiền và bên tôi còn có dịch vụ làm sever discord miễn free</p>
+                <a href="#contact" class="cta-button">Bắt Đầu Tư Vấn Miễn Phí </a>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #f4f4f4;">Chuyên môn JS,HTML,CSS,PYTHON,....</p>
+            </div>
+        </section>
+
+        <section id="about" class="container">
+            <h2>Về Tôi & Mục Tiêu Của Bạn</h2>
+            <p style="text-align: center; max-width: 800px; margin: auto;">
+                Trình độ của tôi không phải quá cao nhưng tôi đảm bảo bạn có thể vui với dịch vụ của tôi
+                <br><br> Mục tiêu của tôi là giúp bạn làm code hoặc sửa code và làm sever discord.</p>
+        </section>
+
+        <section id="services">
+            <div class="container">
+                <h2>Dịch Vụ Tư Vấn</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <span class="icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </span>
+                        <h3>Tư Vấn Kỹ Thuật</h3>
+                        <p>Giải quyết các vấn đề cấp bách (bug, hiệu suất chậm), review code chuyên sâu, và lựa chọn công nghệ phù hợp.</p>
+                    </div>
+                    <div class="service-card">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <h3>Định Hướng Sự Nghiệp</h3>
+                        <p>Xây dựng lộ trình thăng tiến từ Junior lên Senior/Lead, luyện tập phỏng vấn kỹ thuật và hệ thống (System Design).</p>
+                    </div>
+                    <div class="service-card">
+                        <span class="icon"><i class="fab fa-discord"></i></span>
+                        <h3>Xây Dựng Discord Server Pro</h3>
+                        <p>Thiết lập Server cộng đồng, kinh doanh, hoặc game chuyên nghiệp. Cài đặt bảo mật, bots tự động, và roles quản lý.</p>
+                    </div>
+                    <div class="service-card">
+                        <span class="icon"><i class="fas fa-hands-helping"></i></span>
+                        <h3>Mentorship Dài Hạn</h3>
+                        <p>Cố vấn 1-1 theo tháng, theo dõi và phát triển kỹ năng toàn diện, giúp bạn duy trì động lực và học hỏi liên tục.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="container">
+            <h2>Liên Hệ Với Tôi</h2>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-size: 1.1rem; font-weight: bold;">Hoặc Gửi Email Trực Tiếp:</p>
+                <a href="mailto:hachino2345@gmail.com" class="cta-button" style="background: var(--primary-color); color: white; box-shadow: none;">hachino2345@gmail.com</a>
+            </div>
+
+            <form id="contact-form-web3" style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+
+                <div id="form-message" style="display: none;"></div>
+
+                <input type="hidden" name="access_key" value="8c224e14-3119-4be1-b818-d16509dff17d">
+
+                <input type="hidden" name="to" value="banhbao203@outlook.com.vn, hachino2345@gmail.com">
+
+                <input type="hidden" name="charset" value="UTF-8">
+
+                <input type="hidden" name="replyto" value="Email_Liên_Hệ">
+
+                <input type="hidden" name="subject" value="Yêu Cầu Tư Vấn Mới Từ CodeMentor">
+
+                <div style="margin-bottom: 15px;">
+                    <label for="name" style="display: block; margin-bottom: 5px; font-weight: bold;">Tên của bạn:</label>
+                    <input type="text" id="name" name="Tên" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="email_contact" style="display: block; margin-bottom: 5px; font-weight: bold;">Email:</label>
+                    <input type="email" id="email_contact" name="Email_Liên_Hệ" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="message" style="display: block; margin-bottom: 5px; font-weight: bold;">Vấn đề bạn cần tư vấn:</label>
+                    <textarea id="message" name="Vấn_Đề_Tư_Vấn" rows="5" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></textarea>
+                </div>
+
+                <button type="submit" id="submit-button" class="cta-button" style="width: 100%; border: none; cursor: pointer; background: var(--accent-color); color: var(--primary-color); box-shadow: none;">Gửi Yêu Cầu Tư Vấn</button>
+            </form>
+
+        </section>
+    </div>
+
+    <div id="profile" class="tab-content">
+        <section id="profile-content" class="container">
+            <h2>Trang Cá Nhân </h2>
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="banhbaongon.webp" alt="Ảnh Cá Nhân Banhbaongon" />
+                    <div class="profile-info-text">
+                        <h3>Banhbaongon</h3>
+                        <p>1 Developer , Coder , Sinh viên đại học</p>
+                        <p>Email liên hệ: <a href="mailto:hachino2345@gmail.com" style="color: var(--accent-color); text-decoration: none;">hachino2345@gmail.com ( Google ) </a></p>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3>Là 1 Dev và Coder</h3>
+                    <p>
+                        Tôi có thể giúp bạn các vấn đề liên quan đến code
+                </div>
+
+                <div class="skills-section">
+                    <h3>💡 Kỹ Năng Chuyên Môn</h3>
+                    <div class="skills-list">
+                        <ul>
+                            <li>JavaScript</li>
+                            <li>Python</li>
+                            <li>Node.js & Express</li>
+                            <li>Htmlcssjs</li>
+                            <li>SQL & NoSQL</li>
+                            <li>CI/CD & DevOps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🌐 Kết Nối Với Tôi</h3>
+                <div class="social-buttons">
+                    <a href="https://www.facebook.com/profile.php?id=61582636547032" target="_blank" title="Facebook" class="facebook">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                    <a href="https://www.tiktok.com/@banhaonon_" target="_blank" title="TikTok" class="tiktok">
+                        <i class="fab fa-tiktok"></i> TikTok
+                    </a>
+                    <button onclick="copyDiscordId()" title="Bấm để sao chép ID Discord" class="discord">
+                        <i class="fab fa-discord"></i> Discord
+                    </button>
+                    <a href="https://www.youtube.com/@Banhbaongon-fps" target="_blank" title="YouTube" class="youtube">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- PHẦN JAVASCRIPT XỬ LÝ FORM VÀ UI ---
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Khởi tạo tab mặc định
+            document.getElementById("consultation").style.display = "block";
+            document.querySelector(".tab-bar button:first-child").classList.add("active");
+
+            // THÊM ẢNH NỀN NGẪU NHIÊN BẰNG JAVASCRIPT
+            const heroSection = document.getElementById('hero');
+            if (heroSection) {
+                const randomSeed = Math.random();
+                heroSection.style.backgroundImage = `url('https://picsum.photos/1200/500?random=${randomSeed}')`;
+            }
+
+            // XỬ LÝ FORM VỚI WEB3FORMS (AJAX - KHÔNG CHUYỂN HƯỚNG)
+
+            const form = document.getElementById('contact-form-web3');
+            const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+
+            const messageDiv = document.getElementById('form-message');
+
+            if (form && submitBtn) {
+                form.addEventListener('submit', async(e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData(form);
+
+                    const originalText = submitBtn.textContent;
+
+                    // 1. Cập nhật trạng thái UI: Thêm Spinner và Vô hiệu hóa nút
+                    messageDiv.style.display = 'none';
+                    submitBtn.innerHTML = '<span class="loading-spinner"></span> Đang gửi...';
+                    submitBtn.disabled = true;
+
+                    try {
+                        const response = await fetch("https://api.web3forms.com/submit", {
+                            method: "POST",
+                            body: formData
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok && data.success) {
+                            // Gửi thành công!
+                            messageDiv.style.display = 'block';
+                            messageDiv.style.backgroundColor = '#d4edda';
+                            messageDiv.style.color = '#155724';
+                            messageDiv.textContent = 'Gửi yêu cầu thành công! Tôi sẽ liên hệ với bạn sớm nhất.';
+                            form.reset();
+                        } else {
+                            // Gửi thất bại
+                            console.error('LỖI GỬI WEB3FORMS:', data);
+                            messageDiv.style.display = 'block';
+                            messageDiv.style.backgroundColor = '#f8d7da';
+                            messageDiv.style.color = '#721c24';
+                            messageDiv.textContent = 'Gửi thất bại. Lỗi: ' + (data.message || 'Lỗi không xác định.');
+                        }
+
+                    } catch (error) {
+                        console.error('LỖI KẾT NỐI MẠNG:', error);
+                        messageDiv.style.display = 'block';
+                        messageDiv.style.backgroundColor = '#f8d7da';
+                        messageDiv.style.color = '#721c24';
+                        messageDiv.textContent = "Lỗi kết nối mạng. Vui lòng thử lại.";
+                    } finally {
+                        // 2. Phục hồi trạng thái UI
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+
+            // Hàm chuyển tab
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+
+                tabcontent = document.getElementsByClassName("tab-content");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                    tabcontent[i].classList.remove("active");
+                }
+
+                tablinks = document.getElementsByClassName("tab-button");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].classList.remove("active");
+                }
+
+                document.getElementById(tabName).style.display = "block";
+                document.getElementById(tabName).classList.add("active");
+
+                evt.currentTarget.classList.add("active");
+            }
+            window.openTab = openTab;
+
+            // Hàm sao chép Discord ID
+            function copyDiscordId() {
+                const discordId = "banhbao_203";
+                const notification = document.getElementById('discord-notification');
+
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(discordId).then(() => {
+                        notification.style.display = 'block';
+                        setTimeout(() => {
+                            notification.style.display = 'none';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Không thể sao chép: ', err);
+                        alert('Xin lỗi, trình duyệt của bạn không hỗ trợ sao chép tự động. ID Discord: ' + discordId);
+                    });
+                } else {
+                    alert('ID Discord của tôi là: ' + discordId + '. Bạn vui lòng sao chép thủ công nhé.');
+                }
+            }
+            window.copyDiscordId = copyDiscordId;
+        });
+    </script>
+</body>
+
+</html>
